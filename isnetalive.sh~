@@ -54,8 +54,8 @@ SEND_A_MAIL="1"
 }
 
 
-echo $ON > $MODEM  # turn off cable modem 
-echo $ON > $ROUTER # turn off router 
+echo $OFF > $MODEM  # turn off cable modem 
+echo $OFF > $ROUTER # turn off router 
 
 while true
 do
