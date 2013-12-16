@@ -15,6 +15,10 @@ SEND_A_MAIL="0"
 ADDRESS="8.8.8.8" 
 NO_NET="1"
 
+NORMAL_POOL_TIME=8 
+LONG_POOL_TIME=60 
+POOL_TIME=$((NORMAL_POOL_TIME/2))
+
 
 function blink_led
 {
@@ -27,12 +31,18 @@ function blink_led
 function network_ok
 {
    echo "Hay red"
-   
-   if [ "$SEND_A_MAIL" == "1" ]; then 
+   if [ "$SEND_A_MAIL" == "1" ]; then
    SEND_A_MAIL="0"
 #sendmail here  
+
+ echo "Newwork has been restored" | mail -s "RPI Watchddog" itba.jacoby@gmail.com
+
+
+
+echo "mail" $SEND_A_MAIL
    fi
    
+POOL_TIME=$((NORMAL_POOL_TIME/2))
 }
 
 function network_nok
@@ -51,6 +61,10 @@ echo $ON > $ROUTER # turn on router
 
 SEND_A_MAIL="1"  
 
+POOL_TIME=$((LONG_POOL_TIME/2))
+
+
+
 }
 
 
@@ -61,7 +75,7 @@ while true
 do
 
 
-ping -w 1 $ADDRESS > /dev/null 2>&1  
+ping -w 2 $ADDRESS > /dev/null 2>&1  
 RESULT=$?
 
 echo $RESULT
@@ -73,12 +87,14 @@ else
 fi
 
 
-for i in {1..5}
+for (( i=1; i<=$POOL_TIME; i++ ))
 do
 
    blink_led
-   echo "mail" $SEND_A_MAIL
+   echo $i
 done
+
+ 
 
 sleep 3
 

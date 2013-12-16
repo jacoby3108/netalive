@@ -1,0 +1,20 @@
+#!/bin/bash -x  
+
+
+# !/bin/bash followed by -x is for bash debug i.e.:    #!/bin/bash -x
+
+# We will ping to an Universal always avaiable IP 8.8.8.8 (The Google Public DNS IP addresses (IPv4))
+
+
+NORMAL_POOL_TIME=2
+LONG_POOL_TIME=5 
+
+POOL_TIME=$((LONG_POOL_TIME/2))
+
+
+for i in {1..$POOL_TIME}
+do
+
+  
+   echo $i
+done
