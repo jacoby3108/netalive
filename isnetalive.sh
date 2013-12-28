@@ -13,6 +13,7 @@ LEDOFF="0"
 SEND_A_MAIL="0"
 
 ADDRESS="8.8.8.8" 
+#ADDRESS="google.com" 
 NO_NET="1"
 
 NORMAL_POOL_TIME=8 
@@ -33,6 +34,7 @@ function network_ok
    echo "Hay red"
    if [ "$SEND_A_MAIL" == "1" ]; then
    SEND_A_MAIL="0"
+
 #sendmail here  
 
  echo "Newwork has been restored" | mail -s "RPI Watchddog" itba.jacoby@gmail.com
@@ -71,12 +73,20 @@ POOL_TIME=$((LONG_POOL_TIME/2))
 echo $ON > $MODEM  # turn off cable modem 
 echo $ON > $ROUTER # turn off router 
 
+
 while true
 do
 
+#ping 4 times max. If net is aviable then loop ends  
+for (( i=1,RESULT=$NO_NET; "$i" <= "4"  &&  $RESULT == $NO_NET ; i++ ))
+do
 
-ping -w 2 $ADDRESS > /dev/null 2>&1  
+  ping -w 2 $ADDRESS > /dev/null 2>&1  
 RESULT=$?
+
+echo $i
+
+done
 
 echo $RESULT
 
@@ -94,7 +104,6 @@ do
    echo $i
 done
 
- 
 
 sleep 3
 
